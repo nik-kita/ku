@@ -2,12 +2,27 @@ import { Credentials, kucoin_headers } from "../kucoin_headers.ts";
 
 const host = "https://api.kucoin.com" as const;
 const endpoint = "/api/v1/hf/orders" as const;
+const sandbox_endpoint = endpoint + "/test";
 const url = host + endpoint;
+const sandbox_url = host + sandbox_endpoint;
 const method = "POST" as const;
 
-export async function place_hf_order(body: Body, credentials: Credentials) {
-  const headers = await kucoin_headers({ endpoint, method, body }, credentials);
-  const res = await fetch(url, { method, headers, body: JSON.stringify(body) });
+export async function place_hf_order(
+  body: Body,
+  credentials: Credentials,
+  sandbox = false,
+) {
+  const _url = sandbox ? sandbox_url : url;
+  const _endpoint = sandbox ? sandbox_endpoint : endpoint;
+  const headers = await kucoin_headers(
+    { endpoint: _endpoint, method, body },
+    credentials,
+  );
+  const res = await fetch(_url, {
+    method,
+    headers,
+    body: JSON.stringify(body),
+  });
 
   return res.json() as Promise<SuccessRes>;
 }
