@@ -2,7 +2,7 @@ import { assert } from "https://deno.land/std@0.208.0/assert/assert.ts";
 import { symbols } from "./symbols.ts";
 
 Deno.test({
-  name: "Kucoin http API: " + symbols.name,
+  name: "Kucoin http API: symbols",
 }, async (t) => {
   await t.step("all", async () => {
     const res = await symbols();

@@ -7,7 +7,7 @@ import { assert } from "https://deno.land/std@0.208.0/assert/assert.ts";
 const credentials = await load() as Credentials;
 
 Deno.test({
-  name: "Kucoin http API: " + place_hf_order.name,
+  name: "Kucoin http API: place_hf_order",
 }, async (t) => {
   const ulid = monotonicFactory();
 

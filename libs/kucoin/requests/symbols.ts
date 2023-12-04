@@ -6,9 +6,9 @@ export async function symbols(pair: string): Promise<SuccessRes<ResData>>;
 export async function symbols(): Promise<SuccessRes<ResData[]>>;
 export async function symbols(pair?: string) {
   const res = await fetch(pair ? `${url}/${pair}` : url);
-  const data = await res.json() as SuccessRes;
+  const json = await res.json() as SuccessRes;
 
-  return data;
+  return json;
 }
 
 type SuccessRes<T = ResData | ResData[]> = {

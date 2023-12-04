@@ -23,8 +23,9 @@ export async function place_hf_order(
     headers,
     body: JSON.stringify(body),
   });
+  const json = await res.json() as SuccessRes;
 
-  return res.json() as Promise<SuccessRes>;
+  return json;
 }
 
 type Body =
