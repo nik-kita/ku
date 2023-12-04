@@ -63,11 +63,7 @@ export async function kucoin_headers(
     key,
     secret,
     passphrase,
-  }: {
-    key: string;
-    secret: string;
-    passphrase: string;
-  },
+  }: Credentials,
 ) {
   const _endpoint = query && Object.keys(query).length
     ? `${endpoint}?${new URLSearchParams(query as Record<string, string>)}`
@@ -100,3 +96,5 @@ export async function kucoin_headers(
 
   return headers;
 }
+
+export type Credentials = Record<"key" | "secret" | "passphrase", string>;
