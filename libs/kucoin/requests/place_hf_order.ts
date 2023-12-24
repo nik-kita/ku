@@ -7,6 +7,10 @@ const url = host + endpoint;
 const sandbox_url = host + sandbox_endpoint;
 const method = "POST" as const;
 
+/**
+ * @description
+ * https://www.kucoin.com/docs/rest/spot-trading/spot-hf-trade-pro-account/place-hf-order
+ */
 export async function place_hf_order(
   body: Body,
   credentials: Credentials,
@@ -60,4 +64,9 @@ type SuccessRes = {
   data: {
     orderId: string;
   };
+};
+
+export type PlaceHfOrder = {
+  body: Body;
+  res: SuccessRes;
 };
