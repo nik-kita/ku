@@ -4,6 +4,10 @@ const url = host + endpoint;
 
 export async function symbols(pair: string): Promise<SuccessRes<ResData>>;
 export async function symbols(): Promise<SuccessRes<ResData[]>>;
+/**
+ * @description
+ * https://www.kucoin.com/docs/rest/spot-trading/market-data/get-symbols-list
+ */
 export async function symbols(pair?: string) {
   const res = await fetch(pair ? `${url}/${pair}` : url);
   const json = await res.json() as SuccessRes;
@@ -33,4 +37,9 @@ type ResData = {
   isMarginEnabled: boolean; // Available for margin or not.
   priceLimitRate: string; // Threshold for price protection.
   minFunds: string; // The minimum spot and margin trading amounts.
+};
+
+export type Symbols = {
+  params: string;
+  res: SuccessRes;
 };
