@@ -5,8 +5,8 @@ import { Credentials, kucoin_headers } from "../kucoin_headers.ts";
  * https://www.kucoin.com/docs/rest/spot-trading/spot-hf-trade-pro-account/get-active-hf-orders-list
  */
 export async function hf_active_orders(
+  params: ActiveHfOrdersListRequest,
   credentials: Credentials,
-  params?: ActiveHfOrdersListRequest,
 ) {
   const _endpoint = `${endpoint}${
     params ? "?" + new URLSearchParams(params).toString() : ""

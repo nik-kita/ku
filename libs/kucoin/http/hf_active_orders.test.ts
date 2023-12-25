@@ -7,9 +7,9 @@ const credentials = await load() as Credentials;
 
 Deno.test("Kucoin API: hf_active_orders", async (t) => {
   await t.step("_", async () => {
-    const res = await hf_active_orders(credentials, {
+    const res = await hf_active_orders({
       symbol: "BTC-USDT",
-    });
+    }, credentials);
 
     assert(Array.isArray(res.data) || res.data === null);
   });

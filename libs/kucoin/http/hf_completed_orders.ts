@@ -5,16 +5,14 @@ import { Credentials, kucoin_headers } from "../kucoin_headers.ts";
  * https://www.kucoin.com/docs/rest/spot-trading/spot-hf-trade-pro-account/get-hf-completed-order-list
  */
 export async function hf_completed_orders(
+  query: HfCompletedOrderListRequest,
   credentials: Credentials,
-  params?: HfCompletedOrderListRequest,
 ) {
-  const _endpoint = `${endpoint}${
-    params ? "?" + new URLSearchParams(params).toString() : ""
-  }`;
+  const _endpoint = `${endpoint}?${new URLSearchParams(query).toString()}`;
   const headers = await kucoin_headers({
     method,
     endpoint,
-    ...(params && { query: params }),
+    query,
   }, credentials);
   const res = await fetch(host + _endpoint, { headers });
   const json = await res.json();
