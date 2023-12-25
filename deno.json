@@ -4,6 +4,9 @@
     "cli:order_list": "deno run -A --unstable cli/order_list.ts",
     "cli:account_summary": "deno run -A --unstable cli/account_summary.ts",
     "cli:accounts": "deno run -A --unstable cli/accounts.ts",
-    "cli:usdt_to_hf": "deno run -A --unstable cli/transfer_usdt_to_hf.ts"
+    "cli:transfer:usdt_hf_trade": "deno run -A --unstable cli/transfer/usdt_hf_trade.ts",
+    "cli:transfer:usdt_trade_hf": "deno run -A --unstable cli/transfer/usdt_trade_hf.ts",
+    "cli:transfer:btc_trade_hf": "deno run -A --unstable cli/transfer/btc_trade_hf.ts",
+    "cli:transfer:btc_hf_trade": "deno run -A --unstable cli/transfer/btc_hf_trade.ts"
   }
 }
