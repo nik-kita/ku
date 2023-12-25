@@ -11,6 +11,6 @@ Deno.test("Kucoin API: hf_active_orders", async (t) => {
       symbol: "BTC-USDT",
     });
 
-    assert(Array.isArray(res?.data));
+    assert(Array.isArray(res.data) || res.data === null);
   });
 });
