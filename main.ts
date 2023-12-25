@@ -23,7 +23,9 @@ LOGGER.info("top_20.data.bids, my_btc_bid", top_20.data.bids, my_btc_bid);
 const socket = await ku_ws_private(credentials);
 
 socket.on("message", ({ data }) => {
-  LOGGER.info("on message", data);
+  const jData = JSON.parse(data);
+  LOGGER.info("on message", jData);
+  console.log("on message", jData);
 });
 
 await socket.wait_for("open");
@@ -41,5 +43,12 @@ const order = await place_hf_order(
   },
   credentials,
 );
+
+setInterval(() => {
+  socket.send_if_open(JSON.stringify({
+    id: Date.now(),
+    type: "ping",
+  }));
+}, 10_000);
 
 LOGGER.info("order", order);

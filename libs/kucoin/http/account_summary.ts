@@ -4,7 +4,7 @@ import { Credentials, kucoin_headers } from "../kucoin_headers.ts";
  * @description
  * https://www.kucoin.com/docs/rest/account/basic-info/get-account-summary-info
  */
-export async function account_summary_info(credentials: Credentials) {
+export async function account_summary(credentials: Credentials) {
   const headers = await kucoin_headers({ endpoint, method }, credentials);
   const res = await fetch(url, { headers });
   const json = await res.json();
