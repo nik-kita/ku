@@ -6,6 +6,7 @@ import { Credentials } from "./libs/kucoin/kucoin_headers.ts";
 import { ku_ws_private } from "./libs/kucoin/ws/socket.ts";
 import { gen_file_logger } from "./libs/logger/file_logger.ts";
 import { monotonicFactory } from "https://deno.land/x/ulid@v0.3.0/mod.ts";
+import { details_by_order_id } from "./libs/kucoin/http/details_by_order_id.ts";
 
 const LOGGER = gen_file_logger();
 const credentials = await dotenv.load() as Credentials;
@@ -44,11 +45,15 @@ const order = await place_hf_order(
   credentials,
 );
 
-setInterval(() => {
+console.log(order);
+
+setInterval(async () => {
   socket.send_if_open(JSON.stringify({
     id: Date.now(),
     type: "ping",
   }));
+  // const order_details = await details_by_order_id(order.data.orderId, credentials);
+  // console.log(order_details);
 }, 10_000);
 
 LOGGER.info("order", order);

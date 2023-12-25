@@ -1,7 +1,8 @@
 {
   "tasks": {
     "dev": "deno run -A --unstable main.ts",
-    "cli:orders": "deno run -A --unstable cli/order_list.ts",
-    "cli:account": "deno run -A --unstable cli/account_summary.ts"
+    "cli:order_list": "deno run -A --unstable cli/order_list.ts",
+    "cli:account_summary": "deno run -A --unstable cli/account_summary.ts",
+    "cli:accounts": "deno run -A --unstable cli/accounts.ts"
   }
 }
