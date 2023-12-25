@@ -1,3 +1,16 @@
+export type PrivateOrderChangeV2 = {
+  topic: "/spotMarket/tradeOrdersV2";
+  BaseMessage: BaseMessage;
+  OrderData: OrderData;
+  ReceivedMessage: ReceivedMessage;
+  OpenMessage: OpenMessage;
+  MatchMessage: MatchMessage;
+  FilledMessage: FilledMessage;
+  CanceledMessage: CanceledMessage;
+  UpdateMessage: UpdateMessage;
+  TradeOrderMessage: TradeOrderMessage;
+};
+
 // Base message type
 interface BaseMessage {
   type: "message";
