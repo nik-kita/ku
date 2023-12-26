@@ -2,19 +2,34 @@ import { Credentials } from "../kucoin_headers.ts";
 import { apply_private_token } from "./apply_private_token.ts";
 import { SugarWs } from "https://deno.land/x/sugar_ws@v0.9.10/mod.ts";
 import { PrivateOrderChangeV2 } from "./private_order_change_v2.ts";
+import { monotonicFactory } from "https://deno.land/x/ulid@v0.3.0/mod.ts";
+import { PublicLevel2Best50 } from "./public_level2_50best.ts";
 
-export async function ku_ws_private(credentials: Credentials) {
+export async function ku_ws(credentials: Credentials) {
   const { data: { instanceServers, token } } = await apply_private_token(
     credentials,
   );
 
-  return new KuWsPrivate(`${instanceServers[0].endpoint}?token=${token}`);
+  return new KuWs(`${instanceServers[0].endpoint}?token=${token}`);
 }
 
-class KuWsPrivate extends SugarWs {
-  subscribe_private_order_change_v2() {
-    const id = "// TODO".replace(" ", "_") + Date.now();
+const ulid = monotonicFactory();
 
+class KuWs extends SugarWs {
+  subscribe_level2_50best(symbols: string[]) {
+    const id = ulid();
+    this.send_if_open(JSON.stringify(
+      {
+        id,
+        type: "subscribe",
+        privateChannel: false,
+        response: true,
+        topic: `/spotMarket/level2Depth50:${symbols.join()}`,
+      } satisfies Subscription<PublicLevel2Best50["topic"]>,
+    ));
+  }
+  subscribe_private_order_change_v2() {
+    const id = ulid();
     this.send_if_open(JSON.stringify(
       {
         id,
