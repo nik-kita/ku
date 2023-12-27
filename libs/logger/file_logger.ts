@@ -19,10 +19,11 @@ export function gen_file_logger() {
         filename:
           `log__${now.getMonth()}_${now.getDay()}__${now.getHours()}:${now.getMinutes()}::${now.getSeconds()}.txt`,
         formatter: ({ args, msg }) => {
-          return `${"=".repeat(20)} ${msg} ${"=".repeat(20)}\n\n${args
+          return `${"=".repeat(20)} ${msg} ${"=".repeat(20)}\n\n${
+            args
               .map((arg) => JSON.stringify(arg, null, 2))
               .join("\n")
-            }\n\n`;
+          }\n\n`;
         },
       }),
     },
