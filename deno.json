@@ -8,6 +8,7 @@
     "cli:transfer:usdt_hf_trade": "deno run -A --unstable cli/transfer/usdt_hf_trade.ts",
     "cli:transfer:usdt_trade_hf": "deno run -A --unstable cli/transfer/usdt_trade_hf.ts",
     "cli:transfer:btc_trade_hf": "deno run -A --unstable cli/transfer/btc_trade_hf.ts",
-    "cli:transfer:btc_hf_trade": "deno run -A --unstable cli/transfer/btc_hf_trade.ts"
+    "cli:transfer:btc_hf_trade": "deno run -A --unstable cli/transfer/btc_hf_trade.ts",
+    "cli:hf_cancel": "deno run -A --unstable cli/hf_cancel.ts"
   }
 }

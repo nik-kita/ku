@@ -1,13 +1,22 @@
+type topic = `/spotMarket/level2Depth50:${string}`;
+const _topic = "/spotMarket/level2Depth50:" satisfies topic;
 export type PublicLevel2Best50 = {
-  topic: `/spotMarket/level2Depth50:${string}`;
-  Level2Depth50Message: Level2Depth50Message;
+  topic: topic;
+  Level2Depth50Message: Message;
   Level2Depth50Data: Level2Depth50Data;
   Order: Order;
 };
 
-interface Level2Depth50Message {
+export function is_public_level2_best50_message(
+  message: unknown,
+): message is Message {
+  return (message as Message)?.subject === "level2" &&
+    (message as Message)?.topic.slice(0, _topic.length) === _topic;
+}
+
+interface Message {
   type: "message";
-  topic: string;
+  topic: topic;
   subject: "level2";
   data: Level2Depth50Data;
 }

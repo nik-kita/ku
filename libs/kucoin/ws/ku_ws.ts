@@ -1,8 +1,7 @@
+import { SugarWs } from "https://deno.land/x/sugar_ws@v0.9.10/mod.ts";
 import { Credentials } from "../kucoin_headers.ts";
 import { apply_private_token } from "./apply_private_token.ts";
-import { SugarWs } from "https://deno.land/x/sugar_ws@v0.9.10/mod.ts";
 import { PrivateOrderChangeV2 } from "./private_order_change_v2.ts";
-import { monotonicFactory } from "https://deno.land/x/ulid@v0.3.0/mod.ts";
 import { PublicLevel2Best50 } from "./public_level2_50best.ts";
 
 export async function ku_ws(credentials: Credentials) {
@@ -13,11 +12,8 @@ export async function ku_ws(credentials: Credentials) {
   return new KuWs(`${instanceServers[0].endpoint}?token=${token}`);
 }
 
-const ulid = monotonicFactory();
-
 class KuWs extends SugarWs {
-  subscribe_level2_50best(symbols: string[]) {
-    const id = ulid();
+  subscribe_level2_50best(symbols: string[], id: string) {
     this.send_if_open(JSON.stringify(
       {
         id,
@@ -28,8 +24,7 @@ class KuWs extends SugarWs {
       } satisfies Subscription<PublicLevel2Best50["topic"]>,
     ));
   }
-  subscribe_private_order_change_v2() {
-    const id = ulid();
+  subscribe_private_order_change_v2(id: string) {
     this.send_if_open(JSON.stringify(
       {
         id,
