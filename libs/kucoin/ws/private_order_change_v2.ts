@@ -1,18 +1,25 @@
 export type PrivateOrderChangeV2 = {
   topic: "/spotMarket/tradeOrdersV2";
-  BaseMessage: BaseMessage;
-  OrderData: OrderData;
+  Message: Message;
+  OrderData: BaseData;
   ReceivedMessage: ReceivedMessage;
   OpenMessage: OpenMessage;
   MatchMessage: MatchMessage;
   FilledMessage: FilledMessage;
   CanceledMessage: CanceledMessage;
   UpdateMessage: UpdateMessage;
-  TradeOrderMessage: TradeOrderMessage;
+  TradeOrderMessage: OrderData;
 };
 
+export function is_private_order_change_v2_message(
+  message: unknown,
+): message is Message {
+  return (message as Message)?.subject === "orderChange" &&
+    (message as Message)?.topic === "/spotMarket/tradeOrdersV2";
+}
+
 // Base message type
-interface BaseMessage {
+interface Message {
   type: "message";
   topic: "/spotMarket/tradeOrdersV2";
   subject: "orderChange";
@@ -21,7 +28,7 @@ interface BaseMessage {
 }
 
 // Common fields in OrderData
-interface OrderData {
+interface BaseData {
   symbol: string;
   orderType: string;
   side: string;
@@ -36,11 +43,11 @@ interface OrderData {
 }
 
 // Specific message types extending OrderData
-interface ReceivedMessage extends OrderData {
+interface ReceivedMessage extends BaseData {
   type: "received";
 }
 
-interface OpenMessage extends OrderData {
+interface OpenMessage extends BaseData {
   type: "open";
   size: string;
   filledSize: string;
@@ -49,7 +56,7 @@ interface OpenMessage extends OrderData {
   canceledFunds: string;
 }
 
-interface MatchMessage extends OrderData {
+interface MatchMessage extends BaseData {
   type: "match";
   liquidity: string;
   size: string;
@@ -62,8 +69,8 @@ interface MatchMessage extends OrderData {
   canceledFunds: string;
 }
 
-interface FilledMessage extends OrderData {
-  type: "filled";
+interface FilledMessage extends BaseData {
+  type: "filled" | "done";
   size: string;
   filledSize: string;
   remainSize: string;
@@ -71,7 +78,7 @@ interface FilledMessage extends OrderData {
   canceledFunds: string;
 }
 
-interface CanceledMessage extends OrderData {
+interface CanceledMessage extends BaseData {
   type: "canceled";
   size: string;
   filledSize: string;
@@ -80,7 +87,7 @@ interface CanceledMessage extends OrderData {
   canceledFunds: string;
 }
 
-interface UpdateMessage extends OrderData {
+interface UpdateMessage extends BaseData {
   type: "update";
   oldSize: string;
   size: string;
@@ -91,7 +98,7 @@ interface UpdateMessage extends OrderData {
 }
 
 // Union type for all message types
-type TradeOrderMessage =
+type OrderData =
   | ReceivedMessage
   | OpenMessage
   | MatchMessage
