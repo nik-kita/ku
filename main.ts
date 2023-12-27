@@ -8,15 +8,25 @@ import { is_private_order_change_v2_message } from "./libs/kucoin/ws/private_ord
 import { is_public_level2_best50_message } from "./libs/kucoin/ws/public_level2_50best.ts";
 import { gen_file_logger } from "./libs/logger/file_logger.ts";
 import * as process from "node:process";
+import { hf_actual_fee } from "./libs/kucoin/http/hf_actual_fee.ts";
+import { accounts } from "./libs/kucoin/http/accounts.ts";
 
 const LOGGER = gen_file_logger();
 const credentials = await dotenv.load() as Credentials;
+LOGGER.info('before bot starting', await accounts(credentials, { type: 'trade_hf' }));
 const BTC_USDT = "BTC-USDT";
 const ulid = monotonicFactory();
 const [
   symbol_data,
+  fees,
   socket,
-] = await Promise.all([symbols("BTC-USDT"), ku_ws(credentials)]);
+] = await Promise.all([
+  symbols(BTC_USDT),
+  hf_actual_fee([BTC_USDT], credentials),
+  ku_ws(credentials),
+]);
+const { makerFeeRate } = fees.data[0];
+const fee = parseFloat(makerFeeRate);
 const btc_min_size = symbol_data.data.baseMinSize;
 let side: "buy" | "sell" = "buy";
 let processing_order = false;
@@ -59,8 +69,8 @@ socket.on("message", async ({ data }) => {
       top = (top as [string, string][]).reduce((acc, [p, a]) => {
         const price = parseFloat(p);
         if (
-          (side === "buy" && last_price! <= price) ||
-          (side === "sell" && last_price! >= price)
+          (side === "buy" && (price + fee * 2) >= last_price!) ||
+          (side === "sell" && price <= (last_price! + fee * 2))
         ) {
           return acc;
         }
