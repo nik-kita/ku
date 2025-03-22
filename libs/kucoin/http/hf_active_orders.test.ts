@@ -5,7 +5,7 @@ import { assert } from "@std/assert";
 
 const credentials = await load() as Credentials;
 
-Deno.test("Kucoin API: hf_active_orders", async (t) => {
+Deno.test("Kucoin http API: hf_active_orders", async (t) => {
   await t.step("_", async () => {
     const res = await hf_active_orders({
       symbol: "BTC-USDT",

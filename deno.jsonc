@@ -7,6 +7,9 @@
     "install": {
       "command": "deno install --allow-scripts"
     },
+    "test": {
+      "command": "deno test --allow-all"
+    },
     "dev": "deno run -A --unstable-kv main.ts",
     "cli:order_list": "deno run -A --unstable-kv cli/order_list.ts",
     "cli:account_summary": "deno run -A --unstable-kv cli/account_summary.ts",

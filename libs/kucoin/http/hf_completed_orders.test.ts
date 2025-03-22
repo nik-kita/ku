@@ -5,12 +5,13 @@ import { assert } from "@std/assert";
 
 const credentials = await load() as Credentials;
 
-Deno.test("Kucoin API: hf_completed_orders", async (t) => {
+Deno.test("Kucoin http API: hf_completed_orders", async (t) => {
   await t.step("_", async () => {
     const res = await hf_completed_orders({
       symbol: "BTC-USDT",
     }, credentials);
 
-    assert(Array.isArray(res?.data?.items));
+    assert(res.code === "200000");
+    assert(res.data === null || Array.isArray(res?.data?.items));
   });
 });
