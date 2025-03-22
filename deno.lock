@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "jsr:@nik-kita/sugar-ws@^1.1.0": "1.1.0",
     "jsr:@std/assert@^1.0.11": "1.0.11",
     "jsr:@std/crypto@^1.0.4": "1.0.4",
     "jsr:@std/dotenv@~0.225.3": "0.225.3",
@@ -10,9 +11,16 @@
     "jsr:@std/internal@^1.0.5": "1.0.5",
     "jsr:@std/io@~0.225.2": "0.225.2",
     "jsr:@std/log@~0.224.14": "0.224.14",
-    "jsr:@std/ulid@1": "1.0.0"
+    "jsr:@std/ulid@1": "1.0.0",
+    "npm:react@latest": "19.0.0"
   },
   "jsr": {
+    "@nik-kita/sugar-ws@1.1.0": {
+      "integrity": "6962a6c8a07be206761dfbf98f945ca2854d755ffe7c10f1fc2008d4553448c9",
+      "dependencies": [
+        "npm:react"
+      ]
+    },
     "@std/assert@1.0.11": {
       "integrity": "2461ef3c368fe88bc60e186e7744a93112f16fd110022e113a0849e94d1c83c1",
       "dependencies": [
@@ -52,8 +60,14 @@
       "integrity": "d41c3d27a907714413649fee864b7cde8d42ee68437d22b79d5de4f81d808780"
     }
   },
+  "npm": {
+    "react@19.0.0": {
+      "integrity": "sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ=="
+    }
+  },
   "workspace": {
     "dependencies": [
+      "jsr:@nik-kita/sugar-ws@^1.1.0",
       "jsr:@std/assert@^1.0.11",
       "jsr:@std/crypto@^1.0.4",
       "jsr:@std/dotenv@~0.225.3",
