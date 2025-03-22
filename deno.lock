@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@nik-kita/sugar-ws@^1.1.0": "1.1.0",
     "jsr:@std/assert@^1.0.11": "1.0.11",
+    "jsr:@std/cli@^1.0.14": "1.0.14",
     "jsr:@std/crypto@^1.0.4": "1.0.4",
     "jsr:@std/dotenv@~0.225.3": "0.225.3",
     "jsr:@std/encoding@^1.0.7": "1.0.7",
@@ -26,6 +27,9 @@
       "dependencies": [
         "jsr:@std/internal"
       ]
+    },
+    "@std/cli@1.0.14": {
+      "integrity": "b09ee9921cd476c0e08185ed2bfce682d45ecf4654f26c31b4aa244a2c5c024e"
     },
     "@std/crypto@1.0.4": {
       "integrity": "cee245c453bd5366207f4d8aa25ea3e9c86cecad2be3fefcaa6cb17203d79340"
@@ -69,6 +73,7 @@
     "dependencies": [
       "jsr:@nik-kita/sugar-ws@^1.1.0",
       "jsr:@std/assert@^1.0.11",
+      "jsr:@std/cli@^1.0.14",
       "jsr:@std/crypto@^1.0.4",
       "jsr:@std/dotenv@~0.225.3",
       "jsr:@std/encoding@^1.0.7",

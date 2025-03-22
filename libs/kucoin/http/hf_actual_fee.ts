@@ -16,7 +16,6 @@ export async function hf_actual_fee(
     },
   }, credentials);
   const url = `${host}${endpoint}?symbols=${symbols.join()}`;
-  console.log(url);
   const res = await fetch(url, { headers });
   const json = await res.json();
 

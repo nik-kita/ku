@@ -65,7 +65,7 @@ export async function first() {
       } else if (jData.data.type === "canceled") {
         processing_order = false;
         console.log(jData);
-        throw new Error("Unexpected order cancelation");
+        throw new Error("Unexpected order cancellation");
       }
     } else if (is_public_level2_best50_message(jData) && !processing_order) {
       best_50.asks = jData.data.asks;
@@ -126,10 +126,17 @@ export async function first() {
   socket.subscribe_level2_50best([BTC_USDT], monotonicUlid());
   socket.subscribe_private_order_change_v2(monotonicUlid());
 
-  setInterval(() => {
+  const stop_ping_pong = setInterval(() => {
     socket.send_if_open(JSON.stringify({
       id: Date.now(),
       type: "ping",
     }));
   }, 10_000);
+
+  return {
+    stop: async () => {
+      clearInterval(stop_ping_pong);
+      await socket.wait_for("close").and_close();
+    },
+  };
 }
