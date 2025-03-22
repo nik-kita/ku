@@ -9,12 +9,14 @@ let to: null | "trade_hf" | "trade" = null;
 let amount: null | number = null;
 currency = prompt(`("${currency}" by default)\nCurrency:`) || currency;
 do {
-  from = prompt(`("trade" or "trade_hf", the <to> is become opposite)\nFrom:`) as null;
+  from = prompt(
+    `("trade" or "trade_hf", the <to> is become opposite)\nFrom:`,
+  ) as null;
 } while (!from || from !== "trade_hf" && from !== "trade");
 to = from === "trade_hf" ? "trade" : "trade_hf";
 do {
-  amount = Number(prompt('Amount:'))
-} while (typeof amount !== 'number' || Number.isNaN(amount)); 
+  amount = Number(prompt("Amount:"));
+} while (typeof amount !== "number" || Number.isNaN(amount));
 
 const credentials = await load() as Credentials;
 const body = {
