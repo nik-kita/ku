@@ -1,5 +1,12 @@
 {
   "tasks": {
+    "pr": {
+      "description": "Shortcut to create PR and merge dev branch into main",
+      "command": "git add -A && git commit && git push origin dev && gh pr create --fill-verbose && gh pr merge --auto --merge"
+    },
+    "install": {
+      "command": "deno install --allow-scripts"
+    },
     "dev": "deno run -A --unstable main.ts",
     "cli:order_list": "deno run -A --unstable cli/order_list.ts",
     "cli:account_summary": "deno run -A --unstable cli/account_summary.ts",
