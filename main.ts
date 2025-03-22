@@ -7,13 +7,20 @@ const region = Deno.env.get("DENO_REGION");
 const is_perfect_region = DenoRegion.Singapore === region;
 const self_url = "https://kubot.deno.dev";
 
+const cron_options: Parameters<typeof Deno.cron>[1] = is_perfect_region
+  ? {
+    minute: {
+      every: 1,
+    },
+  }
+  : {
+    month: {
+      every: 1,
+    },
+  };
 Deno.cron(
   "wake up",
-  {
-    minute: {
-      every: 9,
-    },
-  },
+  cron_options,
   async () => {
     await fetch(self_url).catch(console.warn);
   },
