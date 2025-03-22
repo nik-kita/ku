@@ -5,24 +5,6 @@ import { DenoRegion } from "./deno-region.const.ts";
 const app = new Hono();
 const region = Deno.env.get("DENO_REGION");
 const is_perfect_region = DenoRegion.Singapore === region;
-const self_url = "https://kubot.deno.dev";
-const cron_abort_controller = new AbortController();
-
-Deno.cron(
-  "wake up",
-  {
-    minute: {
-      every: 1,
-    },
-  },
-  {
-    signal: cron_abort_controller.signal,
-  },
-  async () => {
-    const res = await fetch(self_url);
-    console.log(await res.text());
-  },
-);
 
 if (is_perfect_region) {
   const state = {
@@ -49,7 +31,6 @@ if (is_perfect_region) {
     return c.text("already off");
   });
 } else {
-  cron_abort_controller.abort('In this region service is not actual');
   app.use("*", async (c) => {
     const res = await c.text(region!);
     return res;
