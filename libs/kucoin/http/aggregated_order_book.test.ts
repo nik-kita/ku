@@ -1,4 +1,4 @@
-import { assert } from "https://deno.land/std@0.208.0/assert/assert.ts";
+import { assert } from "@std/assert";
 import { aggregated_order_book } from "./aggregated_order_book.ts";
 
 Deno.test({

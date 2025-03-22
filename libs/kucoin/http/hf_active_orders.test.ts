@@ -1,7 +1,7 @@
-import { load } from "https://deno.land/std@0.210.0/dotenv/mod.ts";
+import { load } from "@std/dotenv";
 import { hf_active_orders } from "./hf_active_orders.ts";
 import { Credentials } from "../kucoin_headers.ts";
-import { assert } from "https://deno.land/std@0.208.0/assert/assert.ts";
+import { assert } from "@std/assert";
 
 const credentials = await load() as Credentials;
 

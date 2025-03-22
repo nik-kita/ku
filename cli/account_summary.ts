@@ -1,4 +1,4 @@
-import { load } from "https://deno.land/std@0.210.0/dotenv/mod.ts";
+import { load } from "@std/dotenv";
 import { Credentials } from "../libs/kucoin/kucoin_headers.ts";
 import { account_summary } from "../libs/kucoin/http/account_summary.ts";
 

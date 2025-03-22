@@ -1,20 +1,18 @@
 import { Credentials } from "../kucoin_headers.ts";
 import { place_hf_order } from "./place_hf_order.ts";
-import { monotonicFactory } from "https://deno.land/x/ulid@v0.3.0/mod.ts";
-import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
-import { assert } from "https://deno.land/std@0.208.0/assert/assert.ts";
+import { monotonicUlid } from "@std/ulid";
+import { load } from "@std/dotenv";
+import { assert } from "@std/assert";
 
 const credentials = await load() as Credentials;
 
 Deno.test({
   name: "Kucoin http API: place_hf_order",
 }, async (t) => {
-  const ulid = monotonicFactory();
-
   await t.step("sandbox", async () => {
     const res = await place_hf_order(
       {
-        clientOid: ulid(),
+        clientOid: monotonicUlid(),
         type: "limit",
         side: "buy",
         symbol: "BTC-USDT",

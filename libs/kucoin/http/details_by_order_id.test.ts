@@ -1,5 +1,5 @@
-import { assert } from "https://deno.land/std@0.210.0/assert/assert.ts";
-import { load } from "https://deno.land/std@0.210.0/dotenv/mod.ts";
+import { assert } from "@std/assert";
+import { load } from "@std/dotenv";
 import { Credentials } from "../kucoin_headers.ts";
 import { details_by_order_id } from "./details_by_order_id.ts";
 import { place_hf_order } from "./place_hf_order.ts";
