@@ -1,21 +1,58 @@
-import { parseArgs } from "@std/cli";
+import { Hono } from "hono";
 import { first } from "./bots/first.ts";
+import { DenoRegion } from "./deno-region.const.ts";
 
-const {
-  bot_name,
-} = await parseArgs(Deno.args, {
-  string: ["bot_name"],
-});
-const BOTS = {
-  first,
-} as const;
+const app = new Hono();
+const region = Deno.env.get("DENO_REGION");
+const is_perfect_region = DenoRegion.Singapore === region;
+const self_url = "https://kubot.deno.dev";
+const cron_abort_controller = new AbortController();
 
-const [_, bot] = Object.entries(BOTS).find(([n]) => n === bot_name) || [];
+Deno.cron(
+  "wake up",
+  {
+    minute: {
+      every: 1,
+    },
+  },
+  {
+    signal: cron_abort_controller.signal,
+  },
+  async () => {
+    await fetch(self_url).catch(console.warn);
+  },
+);
 
-if (bot) {
-  await bot();
+if (is_perfect_region) {
+  const state = {
+    on: false,
+    stop: null as null | (() => Promise<void>),
+  };
+  app.get("on", async (c) => {
+    if (!state.on) {
+      state.on = true;
+      state.stop = (await first()).stop;
+      return c.text("ok");
+    }
+
+    return c.text("already on");
+  }).get("off", async (c) => {
+    if (state.on) {
+      await state.stop!();
+      state.stop = null;
+      state.on = false;
+
+      return c.text("ok");
+    }
+
+    return c.text("already off");
+  });
 } else {
-  console.warn("Available bots:", Object.keys(BOTS));
-  console.info("Usage:");
-  console.warn("deno task bot --bot_name=<available_bot_name>");
+  cron_abort_controller.abort('In this region service is not actual');
+  app.use("*", async (c) => {
+    const res = await c.text(region!);
+    return res;
+  });
 }
+
+Deno.serve(app.fetch);

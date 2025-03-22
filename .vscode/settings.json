@@ -1,3 +1,11 @@
 {
-  "deno.unstable": ["kv"]
+  "deno.unstable": [
+    "kv"
+  ],
+  "cSpell.words": [
+    "denoland",
+    "deployctl",
+    "dotenv",
+    "kubot"
+  ]
 }

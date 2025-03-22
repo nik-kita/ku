@@ -13,6 +13,7 @@
     "jsr:@std/io@~0.225.2": "0.225.2",
     "jsr:@std/log@~0.224.14": "0.224.14",
     "jsr:@std/ulid@1": "1.0.0",
+    "npm:hono@^4.7.5": "4.7.5",
     "npm:react@latest": "19.0.0"
   },
   "jsr": {
@@ -65,6 +66,9 @@
     }
   },
   "npm": {
+    "hono@4.7.5": {
+      "integrity": "sha512-fDOK5W2C1vZACsgLONigdZTRZxuBqFtcKh7bUQ5cVSbwI2RWjloJDcgFOVzbQrlI6pCmhlTsVYZ7zpLj4m4qMQ=="
+    },
     "react@19.0.0": {
       "integrity": "sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ=="
     }
@@ -78,7 +82,8 @@
       "jsr:@std/dotenv@~0.225.3",
       "jsr:@std/encoding@^1.0.7",
       "jsr:@std/log@~0.224.14",
-      "jsr:@std/ulid@1"
+      "jsr:@std/ulid@1",
+      "npm:hono@^4.7.5"
     ]
   }
 }
