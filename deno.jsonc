@@ -7,17 +7,20 @@
     "install": {
       "command": "deno install --allow-scripts"
     },
-    "dev": "deno run -A --unstable main.ts",
-    "cli:order_list": "deno run -A --unstable cli/order_list.ts",
-    "cli:account_summary": "deno run -A --unstable cli/account_summary.ts",
-    "cli:hf_accounts": "deno run -A --unstable cli/hf_accounts.ts",
-    "cli:hf_orders": "deno run -A --unstable cli/hf_orders.ts",
-    "cli:transfer:usdt_hf_trade": "deno run -A --unstable cli/transfer/usdt_hf_trade.ts",
-    "cli:transfer:usdt_trade_hf": "deno run -A --unstable cli/transfer/usdt_trade_hf.ts",
-    "cli:transfer:btc_trade_hf": "deno run -A --unstable cli/transfer/btc_trade_hf.ts",
-    "cli:transfer:btc_hf_trade": "deno run -A --unstable cli/transfer/btc_hf_trade.ts",
-    "cli:hf_cancel": "deno run -A --unstable cli/hf_cancel.ts",
-    "bot": "deno run -A --unstable main.ts"
+    "test": {
+      "command": "deno test --allow-all"
+    },
+    "dev": "deno run -A --unstable-kv main.ts",
+    "cli:order_list": "deno run -A --unstable-kv cli/order_list.ts",
+    "cli:account_summary": "deno run -A --unstable-kv cli/account_summary.ts",
+    "cli:hf_accounts": "deno run -A --unstable-kv cli/hf_accounts.ts",
+    "cli:hf_orders": "deno run -A --unstable-kv cli/hf_orders.ts",
+    "cli:transfer:usdt_hf_trade": "deno run -A --unstable-kv cli/transfer/usdt_hf_trade.ts",
+    "cli:transfer:usdt_trade_hf": "deno run -A --unstable-kv cli/transfer/usdt_trade_hf.ts",
+    "cli:transfer:btc_trade_hf": "deno run -A --unstable-kv cli/transfer/btc_trade_hf.ts",
+    "cli:transfer:btc_hf_trade": "deno run -A --unstable-kv cli/transfer/btc_hf_trade.ts",
+    "cli:hf_cancel": "deno run -A --unstable-kv cli/hf_cancel.ts",
+    "bot": "deno run -A --unstable-kv main.ts"
   },
   "imports": {
     "@nik-kita/sugar-ws": "jsr:@nik-kita/sugar-ws@^1.1.0",
