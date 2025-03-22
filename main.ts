@@ -8,13 +8,13 @@ const is_perfect_region = DenoRegion.Singapore === region;
 const self_url = "https://kubot.deno.dev";
 
 Deno.cron(
-  "im not sleep",
+  "wake up",
   {
-    [is_perfect_region ? "minute" : "hour"]: {
-      every: is_perfect_region ? 1 : 100,
+    minute: {
+      every: 9,
     },
   },
-  is_perfect_region ? () => {} : async () => {
+  async () => {
     await fetch(self_url).catch(console.warn);
   },
 );
