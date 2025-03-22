@@ -1,3 +1,8 @@
 {
-  "deno.unstable": ["kv"]
+  "deno.unstable": [
+    "kv"
+  ],
+  "cSpell.words": [
+    "kita"
+  ]
 }

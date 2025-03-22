@@ -6,14 +6,12 @@ import { Credentials } from "../libs/kucoin/kucoin_headers.ts";
 import { ku_ws } from "../libs/kucoin/ws/ku_ws.ts";
 import { is_private_order_change_v2_message } from "../libs/kucoin/ws/private_order_change_v2.ts";
 import { is_public_level2_best50_message } from "../libs/kucoin/ws/public_level2_50best.ts";
-import { gen_file_logger } from "../libs/logger/file_logger.ts";
 import { hf_actual_fee } from "../libs/kucoin/http/hf_actual_fee.ts";
 import { accounts } from "../libs/kucoin/http/accounts.ts";
 import { hf_active_orders } from "../libs/kucoin/http/hf_active_orders.ts";
 import { hf_cancel_by_symbol } from "../libs/kucoin/http/hf_cancel_by_symbol.ts";
 
-export async function first() {
-  const LOGGER = gen_file_logger();
+export async function first(LOGGER = { info: console.info }) {
   const credentials = await load() as Credentials;
   LOGGER.info(
     "before bot starting",
