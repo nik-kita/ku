@@ -19,6 +19,7 @@
     "cli:transfer:btc_trade_hf": "deno run -A --unstable-kv cli/transfer/btc_trade_hf.ts",
     "cli:transfer:btc_hf_trade": "deno run -A --unstable-kv cli/transfer/btc_hf_trade.ts",
     "cli:hf_cancel": "deno run -A --unstable-kv cli/hf_cancel.ts",
+    "cli:transfer": "deno run -A --unstable-kv cli/transfer/mod.ts",
     "bot": "deno run -A --unstable-kv main.ts"
   },
   "imports": {
