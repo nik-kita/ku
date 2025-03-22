@@ -1,4 +1,4 @@
-import { load } from "https://deno.land/std@0.210.0/dotenv/mod.ts";
+import { load } from "@std/dotenv";
 import { Credentials } from "../libs/kucoin/kucoin_headers.ts";
 import { hf_cancel_by_symbol } from "../libs/kucoin/http/hf_cancel_by_symbol.ts";
 

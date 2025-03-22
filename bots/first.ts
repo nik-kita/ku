@@ -1,5 +1,5 @@
-import * as dotenv from "https://deno.land/std@0.210.0/dotenv/mod.ts";
-import { monotonicFactory } from "https://deno.land/x/ulid@v0.3.0/mod.ts";
+import { load } from "@std/dotenv";
+import { monotonicUlid } from "@std/ulid";
 import { place_hf_order } from "../libs/kucoin/http/place_hf_order.ts";
 import { symbols } from "../libs/kucoin/http/symbols.ts";
 import { Credentials } from "../libs/kucoin/kucoin_headers.ts";
@@ -7,7 +7,6 @@ import { ku_ws } from "../libs/kucoin/ws/ku_ws.ts";
 import { is_private_order_change_v2_message } from "../libs/kucoin/ws/private_order_change_v2.ts";
 import { is_public_level2_best50_message } from "../libs/kucoin/ws/public_level2_50best.ts";
 import { gen_file_logger } from "../libs/logger/file_logger.ts";
-import * as process from "node:process";
 import { hf_actual_fee } from "../libs/kucoin/http/hf_actual_fee.ts";
 import { accounts } from "../libs/kucoin/http/accounts.ts";
 import { hf_active_orders } from "../libs/kucoin/http/hf_active_orders.ts";
@@ -15,13 +14,12 @@ import { hf_cancel_by_symbol } from "../libs/kucoin/http/hf_cancel_by_symbol.ts"
 
 export async function first() {
   const LOGGER = gen_file_logger();
-  const credentials = await dotenv.load() as Credentials;
+  const credentials = await load() as Credentials;
   LOGGER.info(
     "before bot starting",
     await accounts(credentials, { type: "trade_hf" }),
   );
   const BTC_USDT = "BTC-USDT";
-  const ulid = monotonicFactory();
   const [
     symbol_data,
     fees,
@@ -52,8 +50,9 @@ export async function first() {
     bids: [] as [string, string][] | [number, number][],
     asks: [] as [string, string][] | [number, number][],
   };
+  const te = new TextEncoder();
   socket.on("message", async ({ data }) => {
-    process.stdout.write(".");
+    Deno.stdout.write(te.encode("."));
 
     const jData = JSON.parse(data);
 
@@ -107,7 +106,7 @@ export async function first() {
       const body = {
         symbol: BTC_USDT,
         type: "limit",
-        clientOid: ulid(),
+        clientOid: monotonicUlid(),
         side,
         price: last_price.toString(),
         size: btc_min_size,
@@ -124,8 +123,8 @@ export async function first() {
 
   await socket.wait_for("open");
 
-  socket.subscribe_level2_50best([BTC_USDT], ulid());
-  socket.subscribe_private_order_change_v2(ulid());
+  socket.subscribe_level2_50best([BTC_USDT], monotonicUlid());
+  socket.subscribe_private_order_change_v2(monotonicUlid());
 
   setInterval(() => {
     socket.send_if_open(JSON.stringify({

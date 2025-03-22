@@ -1,5 +1,12 @@
 {
   "tasks": {
+    "pr": {
+      "description": "Shortcut to create PR and merge dev branch into main",
+      "command": "git add -A && git commit && git push origin dev && gh pr create --fill-verbose && gh pr merge --auto --merge"
+    },
+    "install": {
+      "command": "deno install --allow-scripts"
+    },
     "dev": "deno run -A --unstable main.ts",
     "cli:order_list": "deno run -A --unstable cli/order_list.ts",
     "cli:account_summary": "deno run -A --unstable cli/account_summary.ts",
@@ -11,5 +18,14 @@
     "cli:transfer:btc_hf_trade": "deno run -A --unstable cli/transfer/btc_hf_trade.ts",
     "cli:hf_cancel": "deno run -A --unstable cli/hf_cancel.ts",
     "bot": "deno run -A --unstable main.ts"
+  },
+  "imports": {
+    "@nik-kita/sugar-ws": "jsr:@nik-kita/sugar-ws@^1.1.0",
+    "@std/assert": "jsr:@std/assert@^1.0.11",
+    "@std/crypto": "jsr:@std/crypto@^1.0.4",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.3",
+    "@std/encoding": "jsr:@std/encoding@^1.0.7",
+    "@std/log": "jsr:@std/log@^0.224.14",
+    "@std/ulid": "jsr:@std/ulid@^1.0.0"
   }
 }

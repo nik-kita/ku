@@ -1,5 +1,5 @@
-import { crypto } from "https://deno.land/std@0.208.0/crypto/mod.ts";
-import { encodeBase64 } from "https://deno.land/std@0.208.0/encoding/base64.ts";
+import { crypto } from "@std/crypto";
+import { encodeBase64 } from "@std/encoding";
 
 const te = new TextEncoder();
 

@@ -1,4 +1,4 @@
-import { assert } from "https://deno.land/std@0.208.0/assert/assert.ts";
+import { assert } from "@std/assert";
 import { symbols } from "./symbols.ts";
 
 Deno.test({

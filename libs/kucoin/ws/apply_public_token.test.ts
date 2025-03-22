@@ -1,4 +1,4 @@
-import { assert } from "https://deno.land/std@0.210.0/assert/assert.ts";
+import { assert } from "@std/assert";
 import { apply_public_token } from "./apply_public_token.ts";
 
 Deno.test({

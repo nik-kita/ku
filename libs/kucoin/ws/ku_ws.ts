@@ -1,4 +1,4 @@
-import { SugarWs } from "https://deno.land/x/sugar_ws@v0.9.10/mod.ts";
+import { SugarWs } from "@nik-kita/sugar-ws";
 import { Credentials } from "../kucoin_headers.ts";
 import { apply_private_token } from "./apply_private_token.ts";
 import { PrivateOrderChangeV2 } from "./private_order_change_v2.ts";
