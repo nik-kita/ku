@@ -19,7 +19,8 @@ Deno.cron(
     signal: cron_abort_controller.signal,
   },
   async () => {
-    await fetch(self_url).catch(console.warn);
+    const res = await fetch(self_url);
+    console.log(await res.text());
   },
 );
 
