@@ -94,6 +94,9 @@ export async function first() {
 
       last_price = price_attempt;
 
+      console.log(baseIncrement, 'baseIncrement');
+      console.log(last_price, 'last_price');
+
       const body = {
         symbol: BTC_USDT,
         type: "limit",
@@ -103,10 +106,11 @@ export async function first() {
         size: String(btc_min_size_float + btc_min_size_float),
       } as const;
       processing_order = true;
-      await place_hf_order(
+      const res = await place_hf_order(
         body,
         credentials,
       );
+      console.log(res);
       console.info(`ASKS: ${asks.map(([p, a]) => `${p}:${a}`).join(" ")}`);
       console.info(`BIDS: ${bids.map(([p, a]) => `${p}:${a}`).join(" ")}`);
       console.info("order body", body);
