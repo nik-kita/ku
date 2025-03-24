@@ -103,7 +103,7 @@ export async function first() {
         size: String(btc_min_size_float + btc_min_size_float),
       } as const;
       processing_order = true;
-      const { data: { orderId } } = await place_hf_order(
+      await place_hf_order(
         body,
         credentials,
       );
