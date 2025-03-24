@@ -31,7 +31,7 @@ export async function first() {
   const fee = parseFloat(makerFeeRate);
   const {
     baseMinSize,
-    baseIncrement,
+    priceIncrement,
   } = symbol_data.data;
   const btc_min_size_float = parseFloat(baseMinSize);
   let side: "buy" | "sell" = "buy";
@@ -68,10 +68,10 @@ export async function first() {
 
       if (side === "buy") {
         const best_big_bid = parseFloat(bids[0][0]);
-        price_attempt = best_big_bid + parseFloat(baseIncrement) * 3;
+        price_attempt = best_big_bid + parseFloat(priceIncrement) * 3;
       } else {
         const best_small_ask = parseFloat(asks[0][0]);
-        price_attempt = best_small_ask - parseFloat(baseIncrement) * 3;
+        price_attempt = best_small_ask - parseFloat(priceIncrement) * 3;
       }
 
       if (last_price) {
@@ -94,15 +94,15 @@ export async function first() {
 
       last_price = price_attempt;
 
-      console.log(baseIncrement, 'baseIncrement');
-      console.log(last_price, 'last_price');
+      console.log(priceIncrement, 'priceIncrement');
+      console.log(roundedPrice(last_price, priceIncrement), 'last_price');
 
       const body = {
         symbol: BTC_USDT,
         type: "limit",
         clientOid: monotonicUlid(),
         side,
-        price: roundedPrice(last_price, baseIncrement),
+        price: roundedPrice(last_price, priceIncrement),
         size: String(btc_min_size_float + btc_min_size_float),
       } as const;
       processing_order = true;
