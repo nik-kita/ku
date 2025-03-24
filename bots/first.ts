@@ -29,30 +29,21 @@ export async function first() {
   ]);
   const { makerFeeRate } = fees.data[0];
   const fee = parseFloat(makerFeeRate);
-  const btc_min_size = symbol_data.data.baseMinSize;
-  const btc_min_size_float = parseFloat(btc_min_size);
+  const {
+    baseMinSize,
+    baseIncrement,
+  } = symbol_data.data;
+  const btc_min_size_float = parseFloat(baseMinSize);
   let side: "buy" | "sell" = "buy";
   let processing_order = false;
   let last_price: number | null = null;
   const { data: prev_active_orders } = await hf_active_orders({
     symbol: BTC_USDT,
   }, credentials);
-  if (prev_active_orders && prev_active_orders.length > 1) {
+  if (prev_active_orders && prev_active_orders.length > 0) {
     await hf_cancel_by_symbol(BTC_USDT, credentials);
-  } else if (prev_active_orders && prev_active_orders.length === 1) {
-    const prev = prev_active_orders[0];
-    processing_order = true;
-    last_price = parseFloat(prev.price);
-    side = prev.side;
   }
-  const best_50 = {
-    bids: [] as [string, string][] | [number, number][],
-    asks: [] as [string, string][] | [number, number][],
-  };
-  const te = new TextEncoder();
   socket.on("message", async ({ data }) => {
-    Deno.stdout.write(te.encode("."));
-
     const jData = JSON.parse(data);
 
     if (is_private_order_change_v2_message(jData)) {
@@ -63,59 +54,59 @@ export async function first() {
         console.info(jData);
       } else if (jData.data.type === "canceled") {
         processing_order = false;
+        last_price = null;
         console.warn(jData);
         return;
       }
     } else if (is_public_level2_best50_message(jData) && !processing_order) {
-      best_50.asks = jData.data.asks;
-      best_50.bids = jData.data.bids;
+      const { asks, bids } = jData.data;
 
       if (processing_order) {
         return;
       }
-      let top: Array<[string, string] | [number, number]> = side === "buy"
-        ? best_50.asks
-        : best_50.bids;
-      if (top.length === 0) {
-        return;
+      let price_attempt: number;
+
+      if (side === "buy") {
+        const best_big_bid = parseFloat(bids[0][0]);
+        const better_big_bid = parseFloat(bids[1][0]);
+        price_attempt = best_big_bid + (best_big_bid - better_big_bid),
+          baseIncrement;
+      } else {
+        const best_small_ask = parseFloat(asks[0][0]);
+        const better_small_ask = parseFloat(asks[1][0]);
+        price_attempt = best_small_ask - (better_small_ask - best_small_ask),
+          baseIncrement;
       }
-      if (last_price !== null) {
-        top = (top as [string, string][]).reduce((acc, [p, a]) => {
-          const price = parseFloat(p);
-          const amount = parseFloat(a);
-          if (
-            amount > btc_min_size_float * 10 &&
-              (side === "buy" && (price + fee * 2) <= last_price!) ||
-            (side === "sell" && price >= (last_price! + fee * 2))
-          ) {
-            return acc;
+
+      if (last_price) {
+        if (side === "buy") {
+          if ((price_attempt + fee * 2) > last_price) {
+            return;
           }
-
-          acc.push([price, parseFloat(a)]);
-
-          return acc;
-        }, [] as [number, number][]);
+        } else {
+          if (price_attempt < (last_price + fee * 2)) {
+            return;
+          }
+        }
       }
-      if (top.length === 0) {
-        return;
-      }
-      const top2 = top as [number, number][];
-      console.info(best_50);
-      last_price = top2.at(-1)![0];
+
+      last_price = price_attempt;
+
       const body = {
         symbol: BTC_USDT,
         type: "limit",
         clientOid: monotonicUlid(),
         side,
-        price: last_price.toString(),
+        price: roundedPrice(last_price, baseIncrement),
         size: String(btc_min_size_float + btc_min_size_float),
       } as const;
       processing_order = true;
-      console.log(body);
       await place_hf_order(
         body,
         credentials,
       );
+      console.info(`ASKS: ${asks.map(([p, a]) => `${p}:${a}`).join(" ")}`);
+      console.info(`BIDS: ${bids.map(([p, a]) => `${p}:${a}`).join(" ")}`);
       console.info("order body", body);
     }
   });
@@ -138,4 +129,8 @@ export async function first() {
       await socket.wait_for("close").and_close();
     },
   };
+}
+
+function roundedPrice(price: number, priceIncrement: string) {
+  return price.toFixed(priceIncrement.split(".")[1]?.length || 0);
 }
