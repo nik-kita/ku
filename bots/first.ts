@@ -68,19 +68,25 @@ export async function first() {
 
       if (side === "buy") {
         const best_big_bid = parseFloat(bids[0][0]);
-        price_attempt = best_big_bid + parseFloat(baseIncrement);
+        price_attempt = best_big_bid + parseFloat(baseIncrement) * 3;
       } else {
         const best_small_ask = parseFloat(asks[0][0]);
-        price_attempt = best_small_ask - parseFloat(baseIncrement);
+        price_attempt = best_small_ask - parseFloat(baseIncrement) * 3;
       }
 
       if (last_price) {
         if (side === "buy") {
-          if (last_price - price_attempt < fee * 3) {
+          if (
+            (price_attempt > last_price) ||
+            (last_price - price_attempt) < (fee * 3)
+          ) {
             return;
           }
-        } else {
-          if (price_attempt - last_price < fee * 3) {
+        } else { // side === "sell"
+          if (
+            (price_attempt < last_price) ||
+            (price_attempt - last_price) < fee * 3
+          ) {
             return;
           }
         }
@@ -97,7 +103,7 @@ export async function first() {
         size: String(btc_min_size_float + btc_min_size_float),
       } as const;
       processing_order = true;
-      await place_hf_order(
+      const { data: { orderId } } = await place_hf_order(
         body,
         credentials,
       );
