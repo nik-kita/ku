@@ -80,11 +80,11 @@ export async function first() {
 
       if (last_price) {
         if (side === "buy") {
-          if ((price_attempt + fee * 2) > last_price) {
+          if (last_price - price_attempt < fee * 2) {
             return;
           }
         } else {
-          if (price_attempt < (last_price + fee * 2)) {
+          if (price_attempt - last_price < fee * 2) {
             return;
           }
         }
