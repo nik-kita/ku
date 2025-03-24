@@ -11,9 +11,9 @@ import { ku_ws } from "../libs/kucoin/ws/ku_ws.ts";
 import { is_private_order_change_v2_message } from "../libs/kucoin/ws/private_order_change_v2.ts";
 import { is_public_level2_best50_message } from "../libs/kucoin/ws/public_level2_50best.ts";
 
-export async function first(LOGGER = { info: console.info }) {
+export async function first() {
   const credentials = await load() as Credentials;
-  LOGGER.info(
+  console.info(
     "before bot starting",
     await accounts(credentials, { type: "trade_hf" }),
   );
@@ -30,6 +30,7 @@ export async function first(LOGGER = { info: console.info }) {
   const { makerFeeRate } = fees.data[0];
   const fee = parseFloat(makerFeeRate);
   const btc_min_size = symbol_data.data.baseMinSize;
+  const btc_min_size_float = parseFloat(btc_min_size);
   let side: "buy" | "sell" = "buy";
   let processing_order = false;
   let last_price: number | null = null;
@@ -55,15 +56,15 @@ export async function first(LOGGER = { info: console.info }) {
     const jData = JSON.parse(data);
 
     if (is_private_order_change_v2_message(jData)) {
-      LOGGER.info("order_change_v2 message", jData);
+      console.info("order_change_v2 message", jData);
       if (jData.data.type === "filled" || jData.data.type === "done") {
         processing_order = false;
         side = side === "buy" ? "sell" : "buy";
-        console.log(jData);
+        console.info(jData);
       } else if (jData.data.type === "canceled") {
         processing_order = false;
-        console.log(jData);
-        throw new Error("Unexpected order cancellation");
+        console.warn(jData);
+        return;
       }
     } else if (is_public_level2_best50_message(jData) && !processing_order) {
       best_50.asks = jData.data.asks;
@@ -73,17 +74,19 @@ export async function first(LOGGER = { info: console.info }) {
         return;
       }
       let top: Array<[string, string] | [number, number]> = side === "buy"
-        ? best_50.bids
-        : best_50.asks;
+        ? best_50.asks
+        : best_50.bids;
       if (top.length === 0) {
         return;
       }
       if (last_price !== null) {
         top = (top as [string, string][]).reduce((acc, [p, a]) => {
           const price = parseFloat(p);
+          const amount = parseFloat(a);
           if (
-            (side === "buy" && (price + fee * 2) >= last_price!) ||
-            (side === "sell" && price <= (last_price! + fee * 2))
+            amount > btc_min_size_float * 10 &&
+              (side === "buy" && (price + fee * 2) <= last_price!) ||
+            (side === "sell" && price >= (last_price! + fee * 2))
           ) {
             return acc;
           }
@@ -96,18 +99,16 @@ export async function first(LOGGER = { info: console.info }) {
       if (top.length === 0) {
         return;
       }
-      const sorted_top = (top as [number, number][])
-        .sort(([p, a], [p2, a2]) => {
-          return side === "buy" ? a2 - a : p2 - p;
-        });
-      last_price = sorted_top.at(0)![0];
+      const top2 = top as [number, number][];
+      console.info(best_50);
+      last_price = top2.at(-1)![0];
       const body = {
         symbol: BTC_USDT,
         type: "limit",
         clientOid: monotonicUlid(),
         side,
         price: last_price.toString(),
-        size: btc_min_size,
+        size: String(btc_min_size_float + btc_min_size_float),
       } as const;
       processing_order = true;
       console.log(body);
@@ -115,7 +116,7 @@ export async function first(LOGGER = { info: console.info }) {
         body,
         credentials,
       );
-      LOGGER.info("order body", body);
+      console.info("order body", body);
     }
   });
 
