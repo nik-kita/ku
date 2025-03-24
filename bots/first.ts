@@ -68,23 +68,19 @@ export async function first() {
 
       if (side === "buy") {
         const best_big_bid = parseFloat(bids[0][0]);
-        const better_big_bid = parseFloat(bids[1][0]);
-        price_attempt = best_big_bid + (best_big_bid - better_big_bid),
-          baseIncrement;
+        price_attempt = best_big_bid + parseFloat(baseIncrement);
       } else {
         const best_small_ask = parseFloat(asks[0][0]);
-        const better_small_ask = parseFloat(asks[1][0]);
-        price_attempt = best_small_ask - (better_small_ask - best_small_ask),
-          baseIncrement;
+        price_attempt = best_small_ask - parseFloat(baseIncrement);
       }
 
       if (last_price) {
         if (side === "buy") {
-          if (last_price - price_attempt < fee * 2) {
+          if (last_price - price_attempt < fee * 3) {
             return;
           }
         } else {
-          if (price_attempt - last_price < fee * 2) {
+          if (price_attempt - last_price < fee * 3) {
             return;
           }
         }
