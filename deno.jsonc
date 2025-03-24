@@ -32,5 +32,13 @@
     "@std/log": "jsr:@std/log@^0.224.14",
     "@std/ulid": "jsr:@std/ulid@^1.0.0",
     "hono": "npm:hono@^4.7.5"
+  },
+  "deploy": {
+    "project": "4b753487-caf0-4aca-a43b-a41ed842b9b5",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "main.ts"
   }
 }
