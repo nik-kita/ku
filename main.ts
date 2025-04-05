@@ -5,8 +5,9 @@ import { DenoRegion } from "./deno-region.const.ts";
 const app = new Hono();
 const region = Deno.env.get("DENO_REGION");
 const is_perfect_region = DenoRegion.Singapore === region;
+const run = Deno.env.get('RUN') === 'true';
 
-if (is_perfect_region) {
+if (is_perfect_region || run) {
   const state = {
     on: false,
     stop: null as null | (() => Promise<void>),
@@ -37,6 +38,4 @@ if (is_perfect_region) {
   });
 }
 
-Deno.serve({
-  port: 4000,
-}, app.fetch);
+Deno.serve({ port: 4000 }, app.fetch);
