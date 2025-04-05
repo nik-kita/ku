@@ -37,4 +37,6 @@ if (is_perfect_region) {
   });
 }
 
-Deno.serve(app.fetch);
+Deno.serve({
+  port: 4000,
+}, app.fetch);
